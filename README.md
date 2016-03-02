@@ -1,71 +1,96 @@
 git-http-server
 ===============
 
-serve a directory of git repositories over http
+Serve a directory of Git repositories over HTTP.
 
-this tool is basically a thin command line wrapper around
-https://github.com/substack/git-http-backend
+This tool is a thin wrapper around
+[git-http-backend](https://github.com/substack/git-http-backend).
 
-Example
--------
+To set it up:
 
-Start the server with one repository
+```
+npm install -g @klortho/git-http-server
+```
 
-    $ cd repos/
-    $ git init --bare foo.git
-    Initialized empty Git repository in /Users/dave/dev/node-git-http-server/repos/foo.git/
-    $ git-http-server
-    listening on http://0.0.0.0:8174 in /Users/dave/dev/node-git-http-server/repos
+For usage information:
 
-Now, clone the empty repository
+```
+git-http-server --help
+```
 
-    $ git clone http://127.0.0.1:8174/foo.git
-    Cloning into 'foo'...
-    warning: You appear to have cloned an empty repository.
-    Checking connectivity... done.
-    $ cd foo
+In addition to the command-line options, you can also control options with
+environment variables. These are also describe in the usage message. 
+Command-line options take precedence.
 
-Add some files and push them back
+```
+usage: git-http-server [-r] [-p port] [-H host] [dir]
 
-    $ touch bar
-    $ git add bar
-    $ git commit -m 'initial commit' bar
-    [master (root-commit) 9a37778] initial commit
-    1 file changed, 0 insertions(+), 0 deletions(-)
-    create mode 100644 bar
-    $ git push origin master
-    Counting objects: 3, done.
-    Writing objects: 100% (3/3), 204 bytes | 0 bytes/s, done.
-    Total 3 (delta 0), reused 0 (delta 0)
-    To http://127.0.0.1:8174/foo.git
-    * [new branch]      master -> master
+options
 
-Meanwhile, the logs look like
+  -h, --help          print this message and exit
+  -i, --ip            [env GIT_HTTP_IP] IP address of the allowed client
+  -H, --host <host>   [env GIT_HTTP_HOST] host on which to listen
+  -p, --port <port>   [env GIT_HTTP_PORT] port on which to listen
+  -r, --readonly      [env GIT_HTTP_READONLY] operate in read-only mode
+  -u, --updates       check for available updates and exit
+  -v, --version       print the version number and exit
+```
 
-    127.0.0.1 - - [28/Mar/2015:22:45:51 -0400] "GET /foo.git/info/refs?service=git-upload-pack HTTP/1.1" 200 - "-" "git/1.9.5 (Apple Git-50.3)"
-    127.0.0.1 - - [28/Mar/2015:22:46:44 -0400] "GET /foo.git/info/refs?service=git-receive-pack HTTP/1.1" 200 - "-" "git/1.9.5 (Apple Git-50.3)"
-    127.0.0.1 - - [28/Mar/2015:22:46:44 -0400] "POST /foo.git/git-receive-pack HTTP/1.1" 200 - "-" "git/1.9.5 (Apple Git-50.3)"
 
-Install
--------
 
-    [sudo] npm install -g git-http-server
 
-Usage
------
+## Examples
 
-    usage: git-http-server [-r] [-p port] [-H host] [dir]
+Start the server with one repository:
 
-    options
+```
+$ mkdir served && cd served
+$ git init --bare foo.git
+Initialized empty Git repository in /Users/.../repos/foo.git/
+$ git-http-server
+listening on http://0.0.0.0:8174 in /Users/dave/dev/node-git-http-server/repos
+```
 
-      -h, --help               print this message and exit
-      -H, --host <host>        [env GIT_HTTP_HOST] host on which to listen
-      -p, --port <port>        [env GIT_HTTP_PORT] port on which to listen
-      -r, --readonly           [env GIT_HTTP_READONLY] operate in read-only mode
-      -u, --updates            check for available updates
-      -v, --version            print the version number and exit
+Now, from another terminal, clone the empty repository:
 
-License
--------
+```
+$ mkdir clones && cd clones
+$ git clone http://127.0.0.1:8174/foo.git
+Cloning into 'foo'...
+warning: You appear to have cloned an empty repository.
+Checking connectivity... done.
+```
+
+Add do some git stuff in the clone:
+
+```
+$ cd foo
+$ touch bar
+$ git add bar
+$ git commit -m 'initial commit' bar
+[master (root-commit) 9a37778] initial commit ...
+$ git push origin master
+Counting objects: 3, done
+...
+* [new branch]      master -> master
+```
+
+Meanwhile, back in the server terminal, the logs look like:
+
+```
+127.0.0.1 - - [28/Mar/2015:22:45:51 -0400] "GET /foo.git/..."
+127.0.0.1 - - [28/Mar/2015:22:46:44 -0400] "GET /foo.git/..."
+127.0.0.1 - - [28/Mar/2015:22:46:44 -0400] "POST /foo.git/..."
+```
+
+## This fork
+
+The main changes in this fork are:
+
+* The addition of a switch to restrict the clients by IP address
+* Added a programmatic interface - see test/test.js for an example.
+
+
+## License
 
 MIT License

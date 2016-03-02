@@ -1,19 +1,20 @@
 {
-  "name": "git-http-server",
-  "description": "serve a directory of git repositories over http",
-  "version": "0.0.0",
+  "name": "@klortho/git-http-server",
+  "description": "Fork of git-http-server. Serve a directory of Git repositories over HTTP",
+  "version": "0.0.4",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
-  "contributors": [],
+  "contributors": ["Chris Maloney"],
   "preferGlobal": true,
+  "main": "./main.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bahamas10/node-git-http-server.git"
+    "url": "git://github.com/klortho/git-http-server.git"
   },
   "bin": {
-    "git-http-server": "./git-http-server.js"
+    "git-http-server": "./main.js"
   },
   "scripts": {
-    "test": "for f in tests/*.js; do echo \"$f\"; node \"$f\" || exit 1; done; echo 'Passed!'"
+    "test": "echo 'no tests'"
   },
   "dependencies": {
     "access-log": "^0.3.9",
@@ -27,6 +28,7 @@
     "node": "*"
   },
   "engine": "node >= 0.8.0",
+  "license": "MIT",
   "keywords": [
     "git",
     "http"
