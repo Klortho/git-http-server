@@ -3,7 +3,9 @@
   "description": "Fork of git-http-server. Serve a directory of Git repositories over HTTP",
   "version": "0.0.4",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
-  "contributors": ["Chris Maloney"],
+  "contributors": [
+    "Chris Maloney"
+  ],
   "preferGlobal": true,
   "main": "./main.js",
   "repository": {
@@ -14,18 +16,24 @@
     "git-http-server": "./main.js"
   },
   "scripts": {
-    "test": "echo 'no tests'"
+    "test":  "tape test/*.js | tnyan"
   },
   "dependencies": {
     "access-log": "^0.3.9",
-    "git-http-backend": "^0.1.5",
+    "git-http-backend": "^1.0.0",
     "latest": "^0.2.0",
-    "posix-getopt": "^1.1.0"
+    "posix-getopt": "^1.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "fs-extra": "^0.26.7",
+    "npm": "^3.8.6",
+    "simple-git": "^1.32.0",
+    "tap-nyan": "0.0.2",
+    "tape": "^4.5.1"
+  },
   "optionalDependencies": {},
   "engines": {
-    "node": "*"
+    "node": "^5.0.0"
   },
   "engine": "node >= 0.8.0",
   "license": "MIT",

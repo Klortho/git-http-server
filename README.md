@@ -1,12 +1,37 @@
-git-http-server
-===============
+# Git HTTP server
 
-Serve a directory of Git repositories over HTTP.
+Serve a directory tree of Git repositories over HTTP.
 
 This tool is a thin wrapper around
 [git-http-backend](https://github.com/substack/git-http-backend).
 
-To set it up:
+## Use it in your package
+
+Install it with
+
+```
+npm install --save @klortho/git-http-server
+```
+
+Then, in your program, for example:
+
+```javascript
+var gitServer = require('@klortho/git-http-server');
+
+var server = gitServer.run({
+  ip: '129.77.66.122',
+  port: 5167,
+  dir: '/Users/bob/repos',
+});
+
+... do a bunch of stuff ...
+
+server.close();
+```
+
+## Command line
+
+To set it up to use from the command line:
 
 ```
 npm install -g @klortho/git-http-server
@@ -18,9 +43,8 @@ For usage information:
 git-http-server --help
 ```
 
-In addition to the command-line options, you can also control options with
-environment variables. These are also describe in the usage message. 
-Command-line options take precedence.
+Options can be controlled via the command-line (highest precedence) or 
+environment variables. These are also describe in the usage message:
 
 ```
 usage: git-http-server [-r] [-p port] [-H host] [dir]
@@ -35,9 +59,6 @@ options
   -u, --updates       check for available updates and exit
   -v, --version       print the version number and exit
 ```
-
-
-
 
 ## Examples
 
@@ -83,12 +104,22 @@ Meanwhile, back in the server terminal, the logs look like:
 127.0.0.1 - - [28/Mar/2015:22:46:44 -0400] "POST /foo.git/..."
 ```
 
-## This fork
+## Development
+
+Clone the repo, then:
+
+```
+npm install
+npm test
+```
+
+## About this fork
 
 The main changes in this fork are:
 
 * The addition of a switch to restrict the clients by IP address
 * Added a programmatic interface - see test/test.js for an example.
+* Addition of tests
 
 
 ## License

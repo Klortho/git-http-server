@@ -36,10 +36,15 @@ var server = module.exports = {
       });
     }
 
-    var dir = s.dir;
-    if (dir) process.chdir(dir);
+    var dir = opts.dir;
+    if (dir) {
+      process.chdir(dir);
+    }
 
-    http.createServer(onrequest).listen(opts.port, opts.host, started);
+    server.server = http.createServer(onrequest)
+      .listen(opts.port, opts.host, started);
+    return server.server;
+
 
     function started() {
       console.log('listening on http://%s:%d in %s', 
@@ -53,6 +58,7 @@ var server = module.exports = {
         req.socket.remoteAddress || 
         req.connection.socket.remoteAddress;
       if (ip != '127.0.0.1' && !(opts.ip && opts.ip == ip)) {
+        console.error('Request from bad ip: ' + ip);
         res.statusCode = 403; // forbidden
         res.end();
         return;
@@ -61,15 +67,25 @@ var server = module.exports = {
       // ensure the user isn't trying to send up a bad request
       var u = url.parse(req.url);
       if (u.pathname !== path.normalize(u.pathname)) {
+        console.error('bad path: ' + u.pathname);
         res.statusCode = 400;
         res.end();
         return;
       }
 
-      var repo = u.pathname.split('/')[1];
-
+      //var repo = u.pathname.replace(/(.*?\.git)\/.*$/, '$1');
+      var segs = u.pathname.split('/');
+      var gi = segs.findIndex(s => s.endsWith('.git'))
+      if (gi < 1) {
+        console.error('no .git in path: ' + u.pathname);
+        res.statusCode = 400;
+        res.end();
+        return;        
+      }
+      var repo = segs.slice(1, gi + 1).join('/')
       req.pipe(backend(req.url, function(err, service) {
         if (err) {
+          console.error('error 1');
           res.statusCode = 500;
           res.end(err + '\n');
           return;
@@ -78,6 +94,7 @@ var server = module.exports = {
         res.setHeader('content-type', service.type);
 
         if (opts.readonly && service.cmd !== 'git-upload-pack') {
+          console.error('readonly error');
           res.statusCode = 403;
           res.end('server running in read-only mode\n');
           return;
