@@ -24,7 +24,7 @@ test('simple server test', function (t) {
   //$ git init --bare foo.git
   //Initialized empty Git repository in /Users/.../repos/foo.git/
   //$ git-http-server
-  //listening on http://0.0.0.0:8174 in /Users/dave/dev/node-git-http-server/repos
+  //listening on http://0.0.0.0:8174 in /Users/.../repos
 
   // initialize a new git repo
   var served = mkfresh(tmp, 'served');
@@ -69,8 +69,6 @@ test('simple server test', function (t) {
       }
     );
   });
-
-
 });
 
 //--------------------------------------------------------------------

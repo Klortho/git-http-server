@@ -10,13 +10,13 @@ This tool is a thin wrapper around
 Install it with
 
 ```
-npm install --save @klortho/git-http-server
+npm install --save git-http-server2
 ```
 
 Then, in your program, for example:
 
 ```javascript
-var gitServer = require('@klortho/git-http-server');
+var gitServer = require('git-http-server');
 
 var server = gitServer.run({
   ip: '129.77.66.122',
@@ -34,7 +34,7 @@ server.close();
 To set it up to use from the command line:
 
 ```
-npm install -g @klortho/git-http-server
+npm install -g git-http-server2
 ```
 
 For usage information:
@@ -69,7 +69,7 @@ $ mkdir served && cd served
 $ git init --bare foo.git
 Initialized empty Git repository in /Users/.../repos/foo.git/
 $ git-http-server
-listening on http://0.0.0.0:8174 in /Users/dave/dev/node-git-http-server/repos
+listening on http://0.0.0.0:8174 in /Users/.../repos
 ```
 
 Now, from another terminal, clone the empty repository:

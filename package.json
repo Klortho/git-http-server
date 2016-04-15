@@ -1,5 +1,5 @@
 {
-  "name": "@klortho/git-http-server",
+  "name": "git-http-server2",
   "description": "Fork of git-http-server. Serve a directory of Git repositories over HTTP",
   "version": "0.0.4",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
@@ -10,7 +10,7 @@
   "main": "./main.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/klortho/git-http-server.git"
+    "url": "git://github.com/klortho/git-http-server2.git"
   },
   "bin": {
     "git-http-server": "./main.js"
