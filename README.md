@@ -37,8 +37,6 @@ options
 ```
 
 
-
-
 ## Examples
 
 Start the server with one repository:
