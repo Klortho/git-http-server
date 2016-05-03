@@ -7,6 +7,7 @@
 
 var accesslog = require('access-log');
 var backend = require('git-http-backend');
+var fs = require('fs-extra');
 var getopt = require('posix-getopt');
 var http = require('http');
 var package = require('./package.json');
@@ -38,6 +39,12 @@ var server = module.exports = {
 
     var dir = opts.dir;
     if (dir) {
+      try {
+        fs.accessSync(dir, fs.F_OK);
+      }
+      catch(err) {
+        fs.mkdirpSync(dir);
+      }
       process.chdir(dir);
     }
 
