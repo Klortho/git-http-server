@@ -7,6 +7,7 @@
 
 var accesslog = require('access-log');
 var backend = require('git-http-backend');
+var fs = require('fs-extra');
 var getopt = require('posix-getopt');
 var http = require('http');
 var package = require('./package.json');
@@ -39,7 +40,12 @@ var server = module.exports = {
 
     var dir = opts.dir;
     if (dir) {
-      console.log('=======================> dir: ', dir);
+      try {
+        fs.accessSync(dir, fs.F_OK);
+      }
+      catch(err) {
+        fs.mkdirpSync(dir);
+      }
       process.chdir(dir);
     }
 
@@ -86,12 +92,15 @@ var server = module.exports = {
         return;        
       }
       var repo = segs.slice(1, gi + 1).join('/')
+<<<<<<< HEAD
 
 
       //var repo = u.pathname.split('/')[1];
       //repo = 'wt/devdocs-server.git';
       console.log('repo: ', repo);
 
+=======
+>>>>>>> master
       req.pipe(backend(req.url, function(err, service) {
         if (err) {
           console.error('error 1');
