@@ -28,7 +28,6 @@ var server = module.exports = {
   },
 
   run: function(_opts) {
-    console.log('========================> _opts: ', _opts);
     var s = server,
         opts = s.opts;
 
@@ -65,7 +64,6 @@ var server = module.exports = {
         req.connection.remoteAddress || 
         req.socket.remoteAddress || 
         req.connection.socket.remoteAddress;
-      console.log('=========================> ip: ', ip);
       if (ip != '127.0.0.1' && !(opts.ip && opts.ip == ip)) {
         console.error('Request from bad ip: ' + ip);
         res.statusCode = 403; // forbidden
@@ -92,15 +90,10 @@ var server = module.exports = {
         return;        
       }
       var repo = segs.slice(1, gi + 1).join('/')
-<<<<<<< HEAD
-
-
       //var repo = u.pathname.split('/')[1];
       //repo = 'wt/devdocs-server.git';
-      console.log('repo: ', repo);
+      //console.log('repo: ', repo);
 
-=======
->>>>>>> master
       req.pipe(backend(req.url, function(err, service) {
         if (err) {
           console.error('error 1');

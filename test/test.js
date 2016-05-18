@@ -4,13 +4,15 @@ var fs = require('fs-extra');
 var os = require('os');
 var path = require('path');
 var simpleGit = require('simple-git');
-var test = require('tape');
+// Note: use tape-catch! Otherwise, uncaught exceptions are reported as pass.
+var test = require('tape-catch');
 var tmp = os.tmpdir();
 
-var debug = true;
+var debug = false;
+var dlog = debug ? console.log.bind(console) : function() {};
 
 test('simple server test', function (t) {
-  //t.plan(2);
+  t.plan(4);
 
   var timer = setTimeout(function() {
     gitServer.server.close();
@@ -32,11 +34,13 @@ test('simple server test', function (t) {
 
   // Create a directory for a new repo
   var foo = mkfresh(served, 'foo.git');
+
   // New simple-git handler for a single repo
   var fooGit = simpleGit(foo);
+
   // git init --bar foo.git
   fooGit.init(true, function(err, data) {
-    checkError(err);
+    t.notOk(err);
 
     // serve it over http
     process.chdir(served);
@@ -52,17 +56,21 @@ test('simple server test', function (t) {
 
     // Create a directory for a clone
     var clone = mkfresh(tmp, 'clone');
+
     // clone it
     simpleGit(clone).clone('http://127.0.0.1:8174/foo.git', 'foo', 
       function(err, data) {
-        checkError(err);
+        t.notOk(err);
+
         // Check its remotes
         var cgit = simpleGit(path.join(clone, 'foo'));
         cgit.getRemotes(true, function(err, data) {
-          checkError(err);
+          t.notOk(err);
+
           dlog('data ', data);
           t.equal(data[0].name, 'origin');
           gitServer.server.close();
+
           t.end();
           clearTimeout(timer);
         });
@@ -71,14 +79,7 @@ test('simple server test', function (t) {
   });
 });
 
-//--------------------------------------------------------------------
-// Utility functions
-
-function dlog() {
-  if (!debug) return;
-  console.log.apply(console, arguments);
-}
-
+// Helper function
 function mkfresh(parent, dir) {
   var _path = path.join(parent, dir);
   dlog('Making fresh directory ', _path);
@@ -87,9 +88,3 @@ function mkfresh(parent, dir) {
   return _path;
 }
 
-function checkError(err) {
-  if (err) {
-    console.error(err);
-    throw err;
-  }
-}

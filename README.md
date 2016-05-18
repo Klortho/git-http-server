@@ -16,7 +16,7 @@ npm install --save git-http-server2
 Then, in your program, for example:
 
 ```javascript
-var gitServer = require('git-http-server');
+var gitServer = require('git-http-server2');
 
 var server = gitServer.run({
   ip: '129.77.66.122',
@@ -40,14 +40,14 @@ npm install -g git-http-server2
 For usage information:
 
 ```
-git-http-server --help
+git-http-server2 --help
 ```
 
 Options can be controlled via the command-line (highest precedence) or 
 environment variables. These are also describe in the usage message:
 
 ```
-usage: git-http-server [-r] [-p port] [-H host] [dir]
+usage: git-http-server2 [-r] [-p port] [-H host] [dir]
 
 options
 
@@ -68,7 +68,7 @@ Start the server with one repository:
 $ mkdir served && cd served
 $ git init --bare foo.git
 Initialized empty Git repository in /Users/.../repos/foo.git/
-$ git-http-server
+$ git-http-server2
 listening on http://0.0.0.0:8174 in /Users/.../repos
 ```
 
