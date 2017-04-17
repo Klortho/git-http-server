@@ -43,6 +43,7 @@ var server = module.exports = {
         fs.accessSync(dir, fs.F_OK);
       }
       catch(err) {
+        console.log(dir + ' does not exist, creating');
         fs.mkdirpSync(dir);
       }
       process.chdir(dir);
