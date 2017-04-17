@@ -13,6 +13,7 @@ var http = require('http');
 var package = require('./package.json');
 var path = require('path');
 var spawn = require('child_process').spawn;
+var spawnSync = require('child_process').spawnSync;
 var url = require('url');
 
 
@@ -25,6 +26,7 @@ var server = module.exports = {
     host: process.env.GIT_HTTP_HOST || '0.0.0.0',
     port: process.env.GIT_HTTP_PORT || 8174,
     readonly: process.env.GIT_HTTP_READONLY,
+    allowcreation: process.env.GIT_HTTP_ALLOWCREATION
   },
 
   run: function(_opts) {
@@ -112,6 +114,14 @@ var server = module.exports = {
           return;
         }
 
+        if (opts.allowcreation && service.cmd == 'git-receive-pack') {
+          var path = opts.dir + '/' + repo
+          console.log('Creating empty repo ' + repo);
+          var initBare = spawnSync('git', ['init', '--bare', path], { encoding : 'utf8' });
+          console.log(initBare.stdout);
+          console.error(initBare.stderr);
+        }
+
         var ps = spawn(service.cmd, service.args.concat(repo));
         ps.stdout.pipe(service.createStream()).pipe(ps.stdin);
       })).pipe(res);
@@ -126,13 +136,14 @@ if (!module.parent) (function() {
     '',
     'options',
     '',
-    '  -h, --help          print this message and exit',
-    '  -i, --ip            [env GIT_HTTP_IP] IP address of the allowed client',
-    '  -H, --host <host>   [env GIT_HTTP_HOST] host on which to listen',
-    '  -p, --port <port>   [env GIT_HTTP_PORT] port on which to listen',
-    '  -r, --readonly      [env GIT_HTTP_READONLY] operate in read-only mode',
-    '  -u, --updates       check for available updates and exit',
-    '  -v, --version       print the version number and exit',
+    '  -h, --help           print this message and exit',
+    '  -i, --ip             [env GIT_HTTP_IP] IP address of the allowed client',
+    '  -H, --host <host>    [env GIT_HTTP_HOST] host on which to listen',
+    '  -p, --port <port>    [env GIT_HTTP_PORT] port on which to listen',
+    '  -r, --readonly       [env GIT_HTTP_READONLY] operate in read-only mode',
+    '  -a, --alllowcreation [env GIT_HTTP_ALLOWCREATION] allows pushing unknown repositories',
+    '  -u, --updates        check for available updates and exit',
+    '  -v, --version        print the version number and exit',
   ].join('\n');
 
   var options = [
@@ -141,6 +152,7 @@ if (!module.parent) (function() {
     'H:(host)',
     'p:(port)',
     'r(readonly)',
+    'a(allowcreation)',
     'u(updates)',
     'v(version)'
   ].join('');
@@ -155,6 +167,7 @@ if (!module.parent) (function() {
       case 'H': cmdOpts.host = option.optarg; break;
       case 'p': cmdOpts.port = option.optarg; break;
       case 'r': cmdOpts.readonly = true; break;
+      case 'a': cmdOpts.allowcreation = true; break;
       case 'u': // check for updates
         require('latest').checkupdate(package, function(ret, msg) {
           console.log(msg);

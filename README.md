@@ -43,7 +43,7 @@ For usage information:
 git-http-server2 --help
 ```
 
-Options can be controlled via the command-line (highest precedence) or 
+Options can be controlled via the command-line (highest precedence) or
 environment variables. These are also describe in the usage message:
 
 ```
@@ -51,13 +51,14 @@ usage: git-http-server2 [-r] [-p port] [-H host] [dir]
 
 options
 
-  -h, --help          print this message and exit
-  -i, --ip            [env GIT_HTTP_IP] IP address of the allowed client
-  -H, --host <host>   [env GIT_HTTP_HOST] host on which to listen
-  -p, --port <port>   [env GIT_HTTP_PORT] port on which to listen
-  -r, --readonly      [env GIT_HTTP_READONLY] operate in read-only mode
-  -u, --updates       check for available updates and exit
-  -v, --version       print the version number and exit
+  -h, --help           print this message and exit
+  -i, --ip             [env GIT_HTTP_IP] IP address of the allowed client
+  -H, --host <host>    [env GIT_HTTP_HOST] host on which to listen
+  -p, --port <port>    [env GIT_HTTP_PORT] port on which to listen
+  -r, --readonly       [env GIT_HTTP_READONLY] operate in read-only mode
+  -a, --allowcreation [env GIT_HTTP_ALLOWCREATION] allows pushing unknown repositories
+  -u, --updates        check for available updates and exit
+  -v, --version        print the version number and exit
 ```
 
 ## Examples
