@@ -166,6 +166,7 @@ if (!module.parent) (function() {
   }
   var args = process.argv.slice(parser.optind());
   var dir = args[0];
+  cmdOpts.dir = dir
 
   server.run(cmdOpts);
 })();
