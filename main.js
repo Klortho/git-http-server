@@ -63,9 +63,9 @@ var server = module.exports = {
 
     function onrequest(req, res) {
       accesslog(req, res);
-      var ip = req.ip || 
-        req.connection.remoteAddress || 
-        req.socket.remoteAddress || 
+      var ip = req.ip ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
       if (ip != '127.0.0.1' && !(opts.ip && opts.ip == ip)) {
         console.error('Request from bad ip: ' + ip);
@@ -90,7 +90,7 @@ var server = module.exports = {
         console.error('no .git in path: ' + u.pathname);
         res.statusCode = 400;
         res.end();
-        return;        
+        return;
       }
       var repo = segs.slice(1, gi + 1).join('/')
       //var repo = u.pathname.split('/')[1];
