@@ -54,8 +54,8 @@ var server = module.exports = {
 
 
     function started() {
-      console.log('listening on http://%s:%d in %s', 
-        opts.host, opts.port, process.cwd());
+      console.log('listening on http://%s:%d in %s',
+        opts.host, opts.port, opts.dir);
     }
 
     function onrequest(req, res) {
