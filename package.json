@@ -1,7 +1,7 @@
 {
   "name": "git-http-server2",
   "description": "Fork of git-http-server. Serve a directory of Git repositories over HTTP",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
   "contributors": [
     "Chris Maloney"
@@ -23,9 +23,11 @@
     "fs-extra": "^2.1.2",
     "git-http-backend": "^1.0.0",
     "latest": "^0.2.0",
-    "posix-getopt": "^1.2.0"
+    "posix-getopt": "^1.2.0",
+    "simple-git": "^1.75.0"
   },
   "devDependencies": {
+    "tap-nyan": "^1.1.0",
     "tape": "^4.5.1",
     "tape-catch": "^1.0.5"
   },
